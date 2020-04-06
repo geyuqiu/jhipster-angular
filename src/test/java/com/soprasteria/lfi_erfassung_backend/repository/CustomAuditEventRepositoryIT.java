@@ -4,6 +4,7 @@ import com.soprasteria.lfi_erfassung_backend.LfiErfassungBackendApp;
 
 import com.soprasteria.lfi_erfassung_backend.RedisTestContainerExtension;
 import com.soprasteria.lfi_erfassung_backend.config.Constants;
+import com.soprasteria.lfi_erfassung_backend.config.TestSecurityConfiguration;
 import com.soprasteria.lfi_erfassung_backend.config.audit.AuditEventConverter;
 import com.soprasteria.lfi_erfassung_backend.domain.PersistentAuditEvent;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,7 +31,7 @@ import static com.soprasteria.lfi_erfassung_backend.repository.CustomAuditEventR
 /**
  * Integration tests for {@link CustomAuditEventRepository}.
  */
-@SpringBootTest(classes = LfiErfassungBackendApp.class)
+@SpringBootTest(classes = {LfiErfassungBackendApp.class, TestSecurityConfiguration.class})
 @ExtendWith(RedisTestContainerExtension.class)
 @Transactional
 public class CustomAuditEventRepositoryIT {

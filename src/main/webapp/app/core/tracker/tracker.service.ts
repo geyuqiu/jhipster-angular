@@ -6,7 +6,6 @@ import { filter } from 'rxjs/operators';
 import * as SockJS from 'sockjs-client';
 import * as Stomp from 'webstomp-client';
 
-import { AuthServerProvider } from 'app/core/auth/auth-jwt.service';
 import { TrackerActivity } from './tracker-activity.model';
 
 @Injectable({ providedIn: 'root' })
@@ -18,7 +17,7 @@ export class TrackerService {
   private stompSubscription: Stomp.Subscription | null = null;
   private listenerSubject: Subject<TrackerActivity> = new Subject();
 
-  constructor(private router: Router, private authServerProvider: AuthServerProvider, private location: Location) {}
+  constructor(private router: Router, private location: Location) {}
 
   connect(): void {
     if (this.stompClient && this.stompClient.connected) {
@@ -28,10 +27,6 @@ export class TrackerService {
     // building absolute path so that websocket doesn't fail when deploying with a context path
     let url = '/websocket/tracker';
     url = this.location.prepareExternalUrl(url);
-    const authToken = this.authServerProvider.getToken();
-    if (authToken) {
-      url += '?access_token=' + authToken;
-    }
     const socket: WebSocket = new SockJS(url);
     this.stompClient = Stomp.over(socket);
     const headers: Stomp.ConnectionHeaders = {};
