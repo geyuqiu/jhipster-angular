@@ -1,0 +1,42 @@
+version: '2'
+services:
+  lfi_erfassung_backend-app:
+    image: lfi_erfassung_backend
+    environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
+      - SPRING_PROFILES_ACTIVE=prod,swagger
+      - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://lfi_erfassung_backend-postgresql:5432/lfi_erfassung_backend
+      - JHIPSTER_CACHE_REDIS_SERVER=redis://lfi_erfassung_backend-redis:6379
+      - JHIPSTER_CACHE_REDIS_CLUSTER=false
+      # - JHIPSTER_CACHE_REDIS_SERVER=redis://lfi_erfassung_backend-redis:6379
+      # - JHIPSTER_CACHE_REDIS_CLUSTER=true
+      - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
+      - SPRING_DATA_JEST_URI=http://lfi_erfassung_backend-elasticsearch:9200
+      - SPRING_ELASTICSEARCH_REST_URIS=http://lfi_erfassung_backend-elasticsearch:9200
+      - KAFKA_BOOTSTRAPSERVERS=kafka:9092
+    ports:
+      - 8080:8080
+  lfi_erfassung_backend-postgresql:
+    extends:
+      file: postgresql.yml
+      service: lfi_erfassung_backend-postgresql
+  lfi_erfassung_backend-redis:
+    extends:
+      file: redis.yml
+      service: lfi_erfassung_backend-redis
+  lfi_erfassung_backend-elasticsearch:
+    extends:
+      file: elasticsearch.yml
+      service: lfi_erfassung_backend-elasticsearch
+  kafka:
+    extends:
+      file: kafka.yml
+      service: kafka
+    environment:
+      - KAFKA_ADVERTISED_HOST_NAME=kafka
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
+  zookeeper:
+    extends:
+      file: kafka.yml
+      service: zookeeper

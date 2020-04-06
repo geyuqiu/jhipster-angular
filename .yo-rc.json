@@ -1,0 +1,40 @@
+{
+  "generator-jhipster": {
+    "promptValues": {
+      "packageName": "com.soprasteria.lfi_erfassung_backend"
+    },
+    "jhipsterVersion": "6.8.0",
+    "applicationType": "monolith",
+    "baseName": "lfi_erfassung_backend",
+    "packageName": "com.soprasteria.lfi_erfassung_backend",
+    "packageFolder": "com/soprasteria/lfi_erfassung_backend",
+    "serverPort": "8080",
+    "authenticationType": "jwt",
+    "cacheProvider": "redis",
+    "enableHibernateCache": true,
+    "websocket": "spring-websocket",
+    "databaseType": "sql",
+    "devDatabaseType": "h2Memory",
+    "prodDatabaseType": "postgresql",
+    "searchEngine": "elasticsearch",
+    "messageBroker": "kafka",
+    "serviceDiscoveryType": false,
+    "buildTool": "maven",
+    "enableSwaggerCodegen": true,
+    "jwtSecretKey": "ZGU1OTFkZDI1MWFkM2FmOTllM2E3YjY2ZDY2ODcyN2QxOGQxNjRlM2UxMDNjMjlkYzMzMTBjYjFiY2Q1YWRjM2M0YWFhMjZlNTZhY2EzODEwNzA3ODFiNWQ1ZGRmYzljMmQ3NzM0MTRkYTNiMGNmOWU1NDI1N2Q5Y2ZmMzJjZTU=",
+    "embeddableLaunchScript": false,
+    "useSass": true,
+    "clientPackageManager": "npm",
+    "clientFramework": "angularX",
+    "clientTheme": "none",
+    "clientThemeVariant": "",
+    "creationTimestamp": 1586208446028,
+    "testFrameworks": ["gatling", "cucumber", "protractor"],
+    "jhiPrefix": "jhi",
+    "entitySuffix": "",
+    "dtoSuffix": "DTO",
+    "otherModules": [],
+    "enableTranslation": false,
+    "blueprints": []
+  }
+}
