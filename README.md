@@ -2,6 +2,15 @@
 
 This application was generated using JHipster 6.8.0, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v6.8.0](https://www.jhipster.tech/documentation-archive/v6.8.0).
 
+## Getting started
+
+```
+# install docker
+docker-compose -f src/main/docker/redis.yml up -d
+docker-compose -f src/main/docker/keycloak.yml up
+./mvnw
+```
+
 ## Development
 
 Before you can build this project, you must install and configure the following dependencies on your machine:
