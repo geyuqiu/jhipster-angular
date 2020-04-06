@@ -16,7 +16,6 @@
     "databaseType": "sql",
     "devDatabaseType": "h2Memory",
     "prodDatabaseType": "postgresql",
-    "searchEngine": "elasticsearch",
     "messageBroker": "kafka",
     "serviceDiscoveryType": false,
     "buildTool": "maven",
@@ -35,6 +34,7 @@
     "dtoSuffix": "DTO",
     "otherModules": [],
     "enableTranslation": false,
-    "blueprints": []
+    "blueprints": [],
+    "searchEngine": false
   }
 }

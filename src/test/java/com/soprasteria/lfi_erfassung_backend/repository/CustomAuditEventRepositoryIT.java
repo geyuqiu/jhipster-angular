@@ -32,7 +32,7 @@ import static com.soprasteria.lfi_erfassung_backend.repository.CustomAuditEventR
  * Integration tests for {@link CustomAuditEventRepository}.
  */
 @SpringBootTest(classes = {LfiErfassungBackendApp.class, TestSecurityConfiguration.class})
-@ExtendWith(RedisTestContainerExtension.class)
+// @ExtendWith(RedisTestContainerExtension.class)
 @Transactional
 public class CustomAuditEventRepositoryIT {
 

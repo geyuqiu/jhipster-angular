@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Integration tests for the {@link LogoutResource} REST controller.
  */
 @SpringBootTest(classes = {LfiErfassungBackendApp.class, TestSecurityConfiguration.class})
-@ExtendWith(RedisTestContainerExtension.class)
+// @ExtendWith(RedisTestContainerExtension.class)
 public class LogoutResourceIT {
 
     @Autowired

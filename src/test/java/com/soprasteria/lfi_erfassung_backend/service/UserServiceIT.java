@@ -5,7 +5,6 @@ import com.soprasteria.lfi_erfassung_backend.LfiErfassungBackendApp;
 import com.soprasteria.lfi_erfassung_backend.config.Constants;
 import com.soprasteria.lfi_erfassung_backend.config.TestSecurityConfiguration;
 import com.soprasteria.lfi_erfassung_backend.domain.User;
-import com.soprasteria.lfi_erfassung_backend.repository.search.UserSearchRepository;
 import com.soprasteria.lfi_erfassung_backend.repository.UserRepository;
 import com.soprasteria.lfi_erfassung_backend.security.AuthoritiesConstants;
 import com.soprasteria.lfi_erfassung_backend.service.dto.UserDTO;
@@ -30,15 +29,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
 
 /**
  * Integration tests for {@link UserService}.
  */
 @SpringBootTest(classes = {LfiErfassungBackendApp.class, TestSecurityConfiguration.class})
-@ExtendWith(RedisTestContainerExtension.class)
+// @ExtendWith(RedisTestContainerExtension.class)
 @Transactional
 public class UserServiceIT {
 
@@ -59,14 +55,6 @@ public class UserServiceIT {
 
     @Autowired
     private UserService userService;
-
-    /**
-     * This repository is mocked in the com.soprasteria.lfi_erfassung_backend.repository.search test package.
-     *
-     * @see com.soprasteria.lfi_erfassung_backend.repository.search.UserSearchRepositoryMockConfiguration
-     */
-    @Autowired
-    private UserSearchRepository mockUserSearchRepository;
 
     private User user;
 

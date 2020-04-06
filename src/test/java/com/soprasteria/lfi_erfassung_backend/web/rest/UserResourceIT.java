@@ -6,7 +6,6 @@ import com.soprasteria.lfi_erfassung_backend.config.TestSecurityConfiguration;
 import com.soprasteria.lfi_erfassung_backend.domain.Authority;
 import com.soprasteria.lfi_erfassung_backend.domain.User;
 import com.soprasteria.lfi_erfassung_backend.repository.UserRepository;
-import com.soprasteria.lfi_erfassung_backend.repository.search.UserSearchRepository;
 import com.soprasteria.lfi_erfassung_backend.security.AuthoritiesConstants;
 import com.soprasteria.lfi_erfassung_backend.service.dto.UserDTO;
 import com.soprasteria.lfi_erfassung_backend.service.mapper.UserMapper;
@@ -41,7 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @WithMockUser(authorities = AuthoritiesConstants.ADMIN)
 @SpringBootTest(classes = {LfiErfassungBackendApp.class, TestSecurityConfiguration.class})
-@ExtendWith(RedisTestContainerExtension.class)
+// @ExtendWith(RedisTestContainerExtension.class)
 public class UserResourceIT {
 
     private static final String DEFAULT_LOGIN = "johndoe";
@@ -60,14 +59,6 @@ public class UserResourceIT {
 
     @Autowired
     private UserRepository userRepository;
-
-    /**
-     * This repository is mocked in the com.soprasteria.lfi_erfassung_backend.repository.search test package.
-     *
-     * @see com.soprasteria.lfi_erfassung_backend.repository.search.UserSearchRepositoryMockConfiguration
-     */
-    @Autowired
-    private UserSearchRepository mockUserSearchRepository;
 
     @Autowired
     private UserMapper userMapper;
@@ -120,7 +111,6 @@ public class UserResourceIT {
     public void getAllUsers() throws Exception {
         // Initialize the database
         userRepository.saveAndFlush(user);
-        mockUserSearchRepository.save(user);
 
         // Get all the users
         restUserMockMvc.perform(get("/api/users?sort=id,desc")
@@ -140,7 +130,6 @@ public class UserResourceIT {
     public void getUser() throws Exception {
         // Initialize the database
         userRepository.saveAndFlush(user);
-        mockUserSearchRepository.save(user);
 
         assertThat(cacheManager.getCache(UserRepository.USERS_BY_LOGIN_CACHE).get(user.getLogin())).isNull();
 

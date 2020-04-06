@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Integration tests for the UTC Hibernate configuration.
  */
 @SpringBootTest(classes = {LfiErfassungBackendApp.class, TestSecurityConfiguration.class})
-@ExtendWith(RedisTestContainerExtension.class)
+// @ExtendWith(RedisTestContainerExtension.class)
 public class HibernateTimeZoneIT {
 
     @Autowired
