@@ -7,7 +7,7 @@ This application was generated using JHipster 6.8.0, you can find documentation 
 ```
 # install docker
 docker-compose -f src/main/docker/redis.yml up -d
-docker-compose -f src/main/docker/keycloak.yml up
+docker-compose -f src/main/docker/keycloak.yml up -d
 ./mvnw
 ```
 
