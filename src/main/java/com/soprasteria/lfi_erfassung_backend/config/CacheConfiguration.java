@@ -42,6 +42,9 @@ public class CacheConfiguration {
             createCache(cm, com.soprasteria.lfi_erfassung_backend.domain.User.class.getName());
             createCache(cm, com.soprasteria.lfi_erfassung_backend.domain.Authority.class.getName());
             createCache(cm, com.soprasteria.lfi_erfassung_backend.domain.User.class.getName() + ".authorities");
+            createCache(cm, com.soprasteria.lfi_erfassung_backend.domain.Student.class.getName());
+            createCache(cm, com.soprasteria.lfi_erfassung_backend.domain.University.class.getName());
+            createCache(cm, com.soprasteria.lfi_erfassung_backend.domain.University.class.getName() + ".standards");
             // jhipster-needle-ehcache-add-entry
         };
     }

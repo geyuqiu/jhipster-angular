@@ -26,6 +26,8 @@ import ConfigurationService from '@/admin/configuration/configuration.service';
 import TrackerService from './admin/tracker/tracker.service';
 /* tslint:disable */
 
+import StudentService from '@/entities/student/student.service';
+import UniversityService from '@/entities/university/university.service';
 // jhipster-needle-add-entity-service-to-main-import - JHipster will import entities services here
 
 /* tslint:enable */
@@ -82,6 +84,8 @@ new Vue({
     metricsService: () => new MetricsService(),
     trackerService: () => trackerService,
     alertService: () => alertService,
+    studentService: () => new StudentService(),
+    universityService: () => new UniversityService(),
     // jhipster-needle-add-entity-service-to-main - JHipster will import entities services here
     accountService: () => accountService
   },

@@ -1,0 +1,13 @@
+entity Student {
+	name String  required
+}
+
+entity University {
+	name String  required
+}
+
+relationship OneToMany {
+    University{standard} to Student{university(name) required},
+}
+
+dto * with mapstruct

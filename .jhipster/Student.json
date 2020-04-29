@@ -1,0 +1,33 @@
+{
+    "name": "Student",
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "university",
+            "otherEntityRelationshipName": "standard",
+            "relationshipValidateRules": "required",
+            "relationshipName": "university",
+            "otherEntityField": "name"
+        }
+    ],
+    "changelogDate": "20200429191800",
+    "entityTableName": "student",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}
