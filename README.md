@@ -38,58 +38,59 @@ To log in to your app, you'll need to have [Keycloak](https://keycloak.org) up a
 docker-compose -f src/main/docker/keycloak.yml up
 ```
 
-The security settings in `src/main/resources/config/application.yml` are configured for this image.
+The security settings in `src/main/resources/application.yml` are configured for this image.
 
 ```yaml
-spring:
-  ...
-  security:
-    oauth2:
-      client:
-        provider:
-          oidc:
-            issuer-uri: http://localhost:9080/auth/realms/jhipster
-        registration:
-          oidc:
-            client-id: web_app
-            client-secret: web_app
+security:
+  basic:
+    enabled: false
+  oauth2:
+    client:
+      accessTokenUri: http://localhost:9080/auth/realms/jhipster/protocol/openid-connect/token
+      userAuthorizationUri: http://localhost:9080/auth/realms/jhipster/protocol/openid-connect/auth
+      clientId: web_app
+      clientSecret: web_app
+      scope: openid profile email
+    resource:
+      userInfoUri: http://localhost:9080/auth/realms/jhipster/protocol/openid-connect/userinfo
 ```
 
 ### Okta
 
-If you'd like to use Okta instead of Keycloak, you'll need to change a few things. First, you'll need to create a free developer account at <https://developer.okta.com/signup/>. After doing so, you'll get your own Okta domain, that has a name like `https://dev-123456.okta.com`.
+If you'd like to use Okta instead of Keycloak, you'll need to change a few things. First, you'll need to create a free developer account at <https://developer.okta.com/signup/>. After doing so, you'll get your own Okta domain, that has a name like `https://dev-123456.oktapreview.com`.
 
-Modify `src/main/resources/config/application.yml` to use your Okta settings.
+Modify `src/main/resources/application.yml` to use your Okta settings.
 
 ```yaml
-spring:
-  ...
-  security:
-    oauth2:
-      client:
-        provider:
-          oidc:
-            issuer-uri: https://{yourOktaDomain}/oauth2/default
-        registration:
-          oidc:
-            client-id: {clientId}
-            client-secret: {clientSecret}
 security:
+  basic:
+    enabled: false
+  oauth2:
+    client:
+      accessTokenUri: https://{yourOktaDomain}.com/oauth2/default/v1/token
+      userAuthorizationUri: https://{yourOktaDomain}.com/oauth2/default/v1/authorize
+      clientId: { clientId }
+      clientSecret: { clientSecret }
+      scope: openid profile email
+    resource:
+      userInfoUri: https://{yourOktaDomain}.com/oauth2/default/v1/userinfo
 ```
 
-Create an OIDC App in Okta to get a `{clientId}` and `{clientSecret}`. To do this, log in to your Okta Developer account and navigate to **Applications** > **Add Application**. Click **Web** and click the **Next** button. Give the app a name you’ll remember, specify `http://localhost:8080` as a Base URI, and `http://localhost:8080/login/oauth2/code/oidc` as a Login Redirect URI. Click **Done**, then Edit and add `http://localhost:8080` as a Logout redirect URI. Copy and paste the client ID and secret into your `application.yml` file.
+Create an OIDC App in Okta to get a `{clientId}` and `{clientSecret}`. To do this, log in to your Okta Developer account and navigate to **Applications** > **Add Application**. Click **Web** and click the **Next** button. Give the app a name you’ll remember, specify `http://localhost:8080` as a Base URI, and `http://localhost:8080/login` as a Login Redirect URI. Click **Done** and copy the client ID and secret into your `application.yml` file.
 
-Create a `ROLE_ADMIN` and `ROLE_USER` group and add users into them. Modify e2e tests to use this account when running integration tests. You'll need to change credentials in `src/test/javascript/e2e/account/account.spec.ts` and `src/test/javascript/e2e/admin/administration.spec.ts`.
+> **TIP:** If you want to use the [Ionic Module for JHipster](https://www.npmjs.com/package/generator-jhipster-ionic), you'll need to add `http://localhost:8100` as a **Login redirect URI** as well.
 
-Navigate to **API** > **Authorization Servers**, click the **Authorization Servers** tab and edit the default one. Click the **Claims** tab and **Add Claim**. Name it "groups", and include it in the ID Token. Set the value type to "Groups" and set the filter to be a Regex of `.*`.
+Create a `ROLE_ADMIN` and `ROLE_USER` group and add users into them. Create a user (e.g., "admin@jhipster.org" with password "Java is hip in 2017!"). Modify e2e tests to use this account when running integration tests. You'll need to change credentials in `src/test/javascript/e2e/account/account.spec.ts` and `src/test/javascript/e2e/admin/administration.spec.ts`.
+
+Navigate to **API** > **Authorization Servers**, click the **Authorization Servers** tab and edit the default one. Click the **Claims** tab and **Add Claim**. Name it "roles", and include it in the ID Token. Set the value type to "Groups" and set the filter to be a Regex of `.*`.
 
 After making these changes, you should be good to go! If you have any issues, please post them to [Stack Overflow](https://stackoverflow.com/questions/tagged/jhipster). Make sure to tag your question with "jhipster" and "okta".
 
-### PWA Support
+### Service workers
 
-JHipster ships with PWA (Progressive Web App) support, and it's turned off by default. One of the main components of a PWA is a service worker.
+Service workers are commented by default, to enable them please uncomment the following code.
 
-The service worker initialization code is commented out by default. To enable it, uncomment the following code in `src/main/webapp/index.html`:
+- The service worker registering script in index.html
 
 ```html
 <script>
@@ -101,7 +102,7 @@ The service worker initialization code is commented out by default. To enable it
 </script>
 ```
 
-Note: [Workbox](https://developers.google.com/web/tools/workbox/) powers JHipster's service worker. It dynamically generates the `service-worker.js` file.
+Note: workbox creates the respective service worker and dynamically generate the `service-worker.js`
 
 ### Managing dependencies
 
@@ -114,7 +115,7 @@ To benefit from TypeScript type definitions from [DefinitelyTyped][] repository 
     npm install --save-dev --save-exact @types/leaflet
 
 Then you would import the JS and CSS files specified in library's installation instructions so that [Webpack][] knows about them:
-Edit [src/main/webapp/app/vendor.ts](src/main/webapp/app/vendor.ts) file:
+Edit [src/main/webapp/app/main.ts](src/main/webapp/app/main.ts) file:
 
 ```
 import 'leaflet/dist/leaflet.js';
@@ -123,26 +124,22 @@ import 'leaflet/dist/leaflet.js';
 Edit [src/main/webapp/content/scss/vendor.scss](src/main/webapp/content/scss/vendor.scss) file:
 
 ```
-@import '~leaflet/dist/leaflet.css';
+@import '~leaflet/dist/leaflet.scss';
 ```
 
-Note: There are still a few other things remaining to do for Leaflet that we won't detail here.
+Note: there are still few other things remaining to do for Leaflet that we won't detail here.
 
 For further instructions on how to develop with JHipster, have a look at [Using JHipster in development][].
 
-### Using Angular CLI
+### Using vue-cli
 
-You can also use [Angular CLI][] to generate some custom client code.
+You can also use [Vue CLI][] to display the project using vue UI.
 
 For example, the following command:
 
-    ng generate component my-component
+    vue ui
 
-will generate few files:
-
-    create src/main/webapp/app/my-component/my-component.component.html
-    create src/main/webapp/app/my-component/my-component.component.ts
-    update src/main/webapp/app/app.module.ts
+will generate open Vue Project Manager. From there, you'll be able to manage your project as any other Vue.js projects.
 
 ### Doing API-First development using openapi-generator
 
@@ -184,14 +181,12 @@ To package your application as a war in order to deploy it to an application ser
 ## Testing
 
 To launch your application's tests, run:
-
-    ./mvnw verify
+./mvnw verify
 
 ### Client tests
 
 Unit tests are run by [Jest][] and written with [Jasmine][]. They're located in [src/test/javascript/](src/test/javascript/) and can be run with:
-
-    npm test
+npm test
 
 For more information, refer to the [Running tests page][].
 
@@ -204,7 +199,6 @@ docker-compose -f src/main/docker/sonar.yml up -d
 ```
 
 You can run a Sonar analysis with using the [sonar-scanner](https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner) or by using the maven plugin.
-
 Then, run a Sonar analysis:
 
 ```
@@ -218,7 +212,6 @@ If you need to re-run the Sonar phase, please be sure to specify at least the `i
 ```
 
 or
-
 For more information, refer to the [Code quality page][].
 
 ## Using Docker to simplify development (optional)
@@ -226,22 +219,15 @@ For more information, refer to the [Code quality page][].
 You can use Docker to improve your JHipster development experience. A number of docker-compose configuration are available in the [src/main/docker](src/main/docker) folder to launch required third party services.
 
 For example, to start a postgresql database in a docker container, run:
-
-    docker-compose -f src/main/docker/postgresql.yml up -d
-
+docker-compose -f src/main/docker/postgresql.yml up -d
 To stop it and remove the container, run:
-
-    docker-compose -f src/main/docker/postgresql.yml down
+docker-compose -f src/main/docker/postgresql.yml down
 
 You can also fully dockerize your application and all the services that it depends on.
 To achieve this, first build a docker image of your app by running:
-
-    ./mvnw -Pprod verify jib:dockerBuild
-
+./mvnw -Pprod verify jib:dockerBuild
 Then run:
-
-    docker-compose -f src/main/docker/app.yml up -d
-
+docker-compose -f src/main/docker/app.yml up -d
 For more information refer to [Using Docker and Docker-Compose][], this page also contains information on the docker-compose sub-generator (`jhipster docker-compose`), which is able to generate docker configurations for one or several JHipster applications.
 
 ## Continuous Integration (optional)
@@ -259,11 +245,11 @@ To configure CI for your project, run the ci-cd sub-generator (`jhipster ci-cd`)
 [node.js]: https://nodejs.org/
 [yarn]: https://yarnpkg.org/
 [webpack]: https://webpack.github.io/
-[angular cli]: https://cli.angular.io/
+[vue cli]: https://cli.vuejs.org/
 [browsersync]: https://www.browsersync.io/
 [jest]: https://facebook.github.io/jest/
 [jasmine]: https://jasmine.github.io/2.0/introduction.html
-[protractor]: https://angular.github.io/protractor/
+[protractor]: https://www.protractortest.org/
 [leaflet]: https://leafletjs.com/
 [definitelytyped]: https://definitelytyped.org/
 [openapi-generator]: https://openapi-generator.tech

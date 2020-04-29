@@ -1,49 +1,45 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, Inject, Vue } from 'vue-property-decorator';
 
-import { TrackerService } from 'app/core/tracker/tracker.service';
-import { TrackerActivity } from 'app/core/tracker/tracker-activity.model';
+import TrackerService from './tracker.service';
 
-@Component({
-  selector: 'jhi-tracker',
-  templateUrl: './tracker.component.html'
-})
-export class TrackerComponent implements OnInit, OnDestroy {
-  activities: TrackerActivity[] = [];
-  subscription?: Subscription;
+@Component
+export default class JhiTrackerComponent extends Vue {
+  public activities: any[] = [];
 
-  constructor(private trackerService: TrackerService) {}
+  @Inject('trackerService') private trackerService: () => TrackerService;
 
-  showActivity(activity: TrackerActivity): void {
+  public mounted(): void {
+    this.init();
+  }
+
+  public destroyed(): void {
+    this.trackerService().unsubscribe();
+  }
+
+  public init(): void {
+    this.trackerService().subscribe();
+    this.trackerService()
+      .receive()
+      .subscribe(activity => {
+        this.showActivity(activity);
+      });
+  }
+
+  public showActivity(activity: any): void {
     let existingActivity = false;
-
     for (let index = 0; index < this.activities.length; index++) {
       if (this.activities[index].sessionId === activity.sessionId) {
         existingActivity = true;
         if (activity.page === 'logout') {
           this.activities.splice(index, 1);
         } else {
-          this.activities[index] = activity;
+          this.activities.splice(index, 1);
+          this.activities.push(activity);
         }
       }
     }
-
     if (!existingActivity && activity.page !== 'logout') {
       this.activities.push(activity);
-    }
-  }
-
-  ngOnInit(): void {
-    this.trackerService.subscribe();
-    this.subscription = this.trackerService.receive().subscribe((activity: TrackerActivity) => {
-      this.showActivity(activity);
-    });
-  }
-
-  ngOnDestroy(): void {
-    this.trackerService.unsubscribe();
-    if (this.subscription) {
-      this.subscription.unsubscribe();
     }
   }
 }

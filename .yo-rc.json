@@ -24,7 +24,7 @@
     "embeddableLaunchScript": false,
     "useSass": true,
     "clientPackageManager": "npm",
-    "clientFramework": "angularX",
+    "clientFramework": "VueJS",
     "clientTheme": "none",
     "clientThemeVariant": "",
     "creationTimestamp": 1586208446028,
@@ -32,9 +32,19 @@
     "jhiPrefix": "jhi",
     "entitySuffix": "",
     "dtoSuffix": "DTO",
-    "otherModules": [],
+    "otherModules": [
+      {
+        "name": "generator-jhipster-vuejs",
+        "version": "1.7.0"
+      }
+    ],
     "enableTranslation": false,
-    "blueprints": [],
+    "blueprints": [
+      {
+        "name": "generator-jhipster-vuejs",
+        "version": "1.7.0"
+      }
+    ],
     "searchEngine": false
   }
 }

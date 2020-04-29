@@ -1,85 +1,75 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { of } from 'rxjs';
+import { shallowMount, createLocalVue, Wrapper } from '@vue/test-utils';
+import axios from 'axios';
+import Logs from '@/admin/logs/logs.vue';
+import LogsClass from '@/admin/logs/logs.component';
+import LogsService from '@/admin/logs/logs.service';
 
-import { LfiErfassungBackendTestModule } from '../../../test.module';
-import { LogsComponent } from 'app/admin/logs/logs.component';
-import { LogsService } from 'app/admin/logs/logs.service';
-import { Log } from 'app/admin/logs/log.model';
+import * as config from '@/shared/config/config';
 
-describe('Component Tests', () => {
-  describe('LogsComponent', () => {
-    let comp: LogsComponent;
-    let fixture: ComponentFixture<LogsComponent>;
-    let service: LogsService;
+const localVue = createLocalVue();
+const mockedAxios: any = axios;
 
-    beforeEach(async(() => {
-      TestBed.configureTestingModule({
-        imports: [LfiErfassungBackendTestModule],
-        declarations: [LogsComponent],
-        providers: [LogsService]
-      })
-        .overrideTemplate(LogsComponent, '')
-        .compileComponents();
-    }));
+config.initVueApp(localVue);
+const store = config.initVueXStore(localVue);
 
-    beforeEach(() => {
-      fixture = TestBed.createComponent(LogsComponent);
-      comp = fixture.componentInstance;
-      service = fixture.debugElement.injector.get(LogsService);
+jest.mock('axios', () => ({
+  get: jest.fn(),
+  post: jest.fn()
+}));
+
+describe('Logs Component', () => {
+  let wrapper: Wrapper<LogsClass>;
+  let logs: LogsClass;
+
+  beforeEach(() => {
+    mockedAxios.get.mockReturnValue(Promise.resolve({}));
+    wrapper = shallowMount<LogsClass>(Logs, { store, localVue, provide: { logsService: () => new LogsService() } });
+    logs = wrapper.vm;
+  });
+
+  it('should be a Vue instance', () => {
+    expect(wrapper.isVueInstance()).toBeTruthy();
+  });
+
+  describe('OnInit', () => {
+    it('should set all default values correctly', () => {
+      expect(logs.filtered).toBe('');
+      expect(logs.orderProp).toBe('name');
+      expect(logs.reverse).toBe(false);
     });
 
-    describe('OnInit', () => {
-      it('should set all default values correctly', () => {
-        expect(comp.filter).toBe('');
-        expect(comp.orderProp).toBe('name');
-        expect(comp.reverse).toBe(false);
-      });
+    it('Should call load all on init', async () => {
+      // WHEN
+      logs.init();
+      await logs.$nextTick();
 
-      it('Should call load all on init', () => {
-        // GIVEN
-        const log = new Log('main', 'WARN');
-        spyOn(service, 'findAll').and.returnValue(
-          of({
-            loggers: {
-              main: {
-                effectiveLevel: 'WARN'
-              }
-            }
-          })
-        );
-
-        // WHEN
-        comp.ngOnInit();
-
-        // THEN
-        expect(service.findAll).toHaveBeenCalled();
-        expect(comp.loggers && comp.loggers[0]).toEqual(jasmine.objectContaining(log));
-      });
+      // THEN
+      expect(mockedAxios.get).toHaveBeenCalledWith('management/loggers');
     });
+  });
 
-    describe('change log level', () => {
-      it('should change log level correctly', () => {
-        // GIVEN
-        const log = new Log('main', 'ERROR');
-        spyOn(service, 'changeLevel').and.returnValue(of({}));
-        spyOn(service, 'findAll').and.returnValue(
-          of({
-            loggers: {
-              main: {
-                effectiveLevel: 'ERROR'
-              }
-            }
-          })
-        );
+  describe('change log level', () => {
+    it('should change log level correctly', async () => {
+      mockedAxios.post.mockReturnValue(Promise.resolve({}));
 
-        // WHEN
-        comp.changeLevel('main', 'ERROR');
+      // WHEN
+      logs.updateLevel('main', 'ERROR');
+      await logs.$nextTick();
 
-        // THEN
-        expect(service.changeLevel).toHaveBeenCalled();
-        expect(service.findAll).toHaveBeenCalled();
-        expect(comp.loggers && comp.loggers[0]).toEqual(jasmine.objectContaining(log));
-      });
+      // THEN
+      expect(mockedAxios.post).toHaveBeenCalledWith('management/loggers/main', { configuredLevel: 'ERROR' });
+      expect(mockedAxios.get).toHaveBeenCalledWith('management/loggers');
+    });
+  });
+
+  describe('change order', () => {
+    it('should change order and invert reverse', () => {
+      // WHEN
+      logs.changeOrder('dummy-order');
+
+      // THEN
+      expect(logs.orderProp).toEqual('dummy-order');
+      expect(logs.reverse).toBe(true);
     });
   });
 });
