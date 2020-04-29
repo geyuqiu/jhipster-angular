@@ -1,10 +1,8 @@
 package com.soprasteria.lfi_erfassung_backend.web.rest.errors;
 
-import com.soprasteria.lfi_erfassung_backend.RedisTestContainerExtension;
 import com.soprasteria.lfi_erfassung_backend.LfiErfassungBackendApp;
 import com.soprasteria.lfi_erfassung_backend.config.TestSecurityConfiguration;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -25,7 +23,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WithMockUser
 @AutoConfigureMockMvc
 @SpringBootTest(classes = {LfiErfassungBackendApp.class, TestSecurityConfiguration.class})
-// @ExtendWith(RedisTestContainerExtension.class)
 public class ExceptionTranslatorIT {
 
     @Autowired

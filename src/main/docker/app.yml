@@ -7,10 +7,6 @@ services:
       - SPRING_PROFILES_ACTIVE=prod,swagger
       - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
       - SPRING_DATASOURCE_URL=jdbc:postgresql://lfi_erfassung_backend-postgresql:5432/lfi_erfassung_backend
-      - JHIPSTER_CACHE_REDIS_SERVER=redis://lfi_erfassung_backend-redis:6379
-      - JHIPSTER_CACHE_REDIS_CLUSTER=false
-      # - JHIPSTER_CACHE_REDIS_SERVER=redis://lfi_erfassung_backend-redis:6379
-      # - JHIPSTER_CACHE_REDIS_CLUSTER=true
       - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_OIDC_ISSUER_URI=http://keycloak:9080/auth/realms/jhipster
       - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_ID=web_app
       - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_SECRET=web_app
@@ -22,10 +18,6 @@ services:
     extends:
       file: postgresql.yml
       service: lfi_erfassung_backend-postgresql
-  lfi_erfassung_backend-redis:
-    extends:
-      file: redis.yml
-      service: lfi_erfassung_backend-redis
   kafka:
     extends:
       file: kafka.yml

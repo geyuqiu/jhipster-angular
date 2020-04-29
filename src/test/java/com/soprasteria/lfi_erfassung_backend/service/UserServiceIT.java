@@ -1,6 +1,5 @@
 package com.soprasteria.lfi_erfassung_backend.service;
 
-import com.soprasteria.lfi_erfassung_backend.RedisTestContainerExtension;
 import com.soprasteria.lfi_erfassung_backend.LfiErfassungBackendApp;
 import com.soprasteria.lfi_erfassung_backend.config.Constants;
 import com.soprasteria.lfi_erfassung_backend.config.TestSecurityConfiguration;
@@ -11,7 +10,6 @@ import com.soprasteria.lfi_erfassung_backend.service.dto.UserDTO;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
@@ -34,7 +32,6 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Integration tests for {@link UserService}.
  */
 @SpringBootTest(classes = {LfiErfassungBackendApp.class, TestSecurityConfiguration.class})
-// @ExtendWith(RedisTestContainerExtension.class)
 @Transactional
 public class UserServiceIT {
 

@@ -2,15 +2,6 @@
 
 This application was generated using JHipster 6.8.0, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v6.8.0](https://www.jhipster.tech/documentation-archive/v6.8.0).
 
-## Getting started
-
-```
-# install docker
-docker-compose -f src/main/docker/redis.yml up -d
-docker-compose -f src/main/docker/keycloak.yml up -d
-./mvnw
-```
-
 ## Development
 
 Before you can build this project, you must install and configure the following dependencies on your machine:
@@ -24,26 +15,6 @@ You will only need to run this command when dependencies change in [package.json
     npm install
 
 We use npm scripts and [Webpack][] as our build system.
-
-If you are using redis as a cache, you will have to launch a cache server.
-To start your cache server, run:
-
-```
-docker-compose -f src/main/docker/redis.yml up -d
-```
-
-The cache can also be turned off by adding to the application yaml:
-
-```
-spring:
-    cache:
-        type: none
-```
-
-See [here](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-caching.html#boot-features-caching-provider-none) for details.
-
-**WARNING**: If you using second level hibernate cache and disabling the spring cache, you have to disable the second level hibernate cache as well since they are using
-the same CacheManager.
 
 Run the following commands in two separate terminals to create a blissful development experience where your browser
 auto-refreshes when files change on your hard drive.

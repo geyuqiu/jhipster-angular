@@ -1,6 +1,5 @@
 package com.soprasteria.lfi_erfassung_backend.web.rest;
 
-import com.soprasteria.lfi_erfassung_backend.RedisTestContainerExtension;
 import com.soprasteria.lfi_erfassung_backend.LfiErfassungBackendApp;
 import com.soprasteria.lfi_erfassung_backend.config.TestSecurityConfiguration;
 import com.soprasteria.lfi_erfassung_backend.domain.Authority;
@@ -12,7 +11,6 @@ import com.soprasteria.lfi_erfassung_backend.service.mapper.UserMapper;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -40,7 +38,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @WithMockUser(authorities = AuthoritiesConstants.ADMIN)
 @SpringBootTest(classes = {LfiErfassungBackendApp.class, TestSecurityConfiguration.class})
-// @ExtendWith(RedisTestContainerExtension.class)
 public class UserResourceIT {
 
     private static final String DEFAULT_LOGIN = "johndoe";

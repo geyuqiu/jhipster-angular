@@ -1,7 +1,6 @@
 package com.soprasteria.lfi_erfassung_backend.web.rest;
 
 import com.soprasteria.lfi_erfassung_backend.LfiErfassungBackendApp;
-import com.soprasteria.lfi_erfassung_backend.RedisTestContainerExtension;
 import com.soprasteria.lfi_erfassung_backend.config.TestSecurityConfiguration;
 import io.github.jhipster.config.JHipsterProperties;
 import com.soprasteria.lfi_erfassung_backend.config.audit.AuditEventConverter;
@@ -12,7 +11,6 @@ import com.soprasteria.lfi_erfassung_backend.security.AuthoritiesConstants;
 import com.soprasteria.lfi_erfassung_backend.service.AuditEventService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -40,7 +38,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @WithMockUser(authorities = AuthoritiesConstants.ADMIN)
 @SpringBootTest(classes = {LfiErfassungBackendApp.class, TestSecurityConfiguration.class})
-// @ExtendWith(RedisTestContainerExtension.class)
 @Transactional
 public class AuditResourceIT {
 
